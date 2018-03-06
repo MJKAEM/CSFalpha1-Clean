@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ContentLoader;
 
 namespace CSFalpha1.Play.Level.Map.Town.BuildingParts
 {
@@ -14,7 +15,7 @@ namespace CSFalpha1.Play.Level.Map.Town.BuildingParts
         }
         public override void LoadContent()
         {
-            objectSprite = ContentLoader.TextureSprite(2);
+            objectSprite = TheContentLoader.TextureSprite[2];
         }
     }
 }

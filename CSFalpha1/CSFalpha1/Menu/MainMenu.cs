@@ -1,14 +1,18 @@
-﻿using System;
+﻿#region Using Statements
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework;
+using VideoDisplay;
+using ContentLoader;
+#endregion
 
 namespace CSFalpha1.Menu
 {
-    public class MainMenu : Menu
+    public class MainMenu : AbstractMenu
     {
         public MainMenu()
         {
@@ -17,41 +21,41 @@ namespace CSFalpha1.Menu
         }
         public override void LoadContent()
         {
-            font = ContentLoader.Font(0);
+            font = TheContentLoader.Font[0];
         }
         public override void Show(SpriteBatch sb, MouseState mouseState)
         {
-            Simplify.DarkenCenterText(sb, font, selected[0], Game.Height / 3, "Single Player");
-            Simplify.DarkenCenterText(sb, font, selected[1], Game.Height / 3 + 35, "Multiplayer");
-            Simplify.DarkenCenterText(sb, font, selected[2], Game.Height / 3 + 70, "Options");
-            Simplify.DarkenCenterText(sb, font, selected[3], Game.Height / 3 + 105, "Credits");
-            Simplify.DarkenCenterText(sb, font, selected[4], Game.Height / 3 + 140, "Exit");
+            Simplify.DarkenCenterText(sb, font, selected[0], VideoVariables.ResolutionHeight / 3, "Single Player");
+            Simplify.DarkenCenterText(sb, font, selected[1], VideoVariables.ResolutionHeight / 3 + 35, "Multiplayer");
+            Simplify.DarkenCenterText(sb, font, selected[2], VideoVariables.ResolutionHeight / 3 + 70, "Options");
+            Simplify.DarkenCenterText(sb, font, selected[3], VideoVariables.ResolutionHeight / 3 + 105, "Credits");
+            Simplify.DarkenCenterText(sb, font, selected[4], VideoVariables.ResolutionHeight / 3 + 140, "Exit");
         }
         public override void SelectMenu(MouseState mouseState, MouseState oldState)
         {
-            for (int i = 0; i < selected.Length; i++)
+            for (int i = selected.Length - 1; i >= 0; i--)
             {
                 selected[i] = false;
             }
             if (isShowing)
             {
-                if (Simplify.MouseSelect(font, mouseState, Simplify.GetCenterText(font, "Single Player"), Game.Height / 3, "Single Player"))
+                if (Simplify.MouseSelect(font, mouseState, Simplify.GetCenterText(font, "Single Player"), VideoVariables.ResolutionHeight / 3, "Single Player"))
                 {
                     selected[0] = true;
                 }
-                else if (Simplify.MouseSelect(font, mouseState, Simplify.GetCenterText(font, "Multiplayer"), Game.Height / 3 + 35, "Multiplayer"))
+                else if (Simplify.MouseSelect(font, mouseState, Simplify.GetCenterText(font, "Multiplayer"), VideoVariables.ResolutionHeight / 3 + 35, "Multiplayer"))
                 {
                     selected[1] = true;
                 }
-                else if (Simplify.MouseSelect(font, mouseState, Simplify.GetCenterText(font, "Options"), Game.Height / 3 + 70, "Options"))
+                else if (Simplify.MouseSelect(font, mouseState, Simplify.GetCenterText(font, "Options"), VideoVariables.ResolutionHeight / 3 + 70, "Options"))
                 {
                     selected[2] = true;
                 }
-                else if (Simplify.MouseSelect(font, mouseState, Simplify.GetCenterText(font, "Credits"), Game.Height / 3 + 105, "Credits"))
+                else if (Simplify.MouseSelect(font, mouseState, Simplify.GetCenterText(font, "Credits"), VideoVariables.ResolutionHeight / 3 + 105, "Credits"))
                 {
                     selected[3] = true;
                 }
-                else if (Simplify.MouseSelect(font, mouseState, Simplify.GetCenterText(font, "Exit"), Game.Height / 3 + 140, "Exit"))
+                else if (Simplify.MouseSelect(font, mouseState, Simplify.GetCenterText(font, "Exit"), VideoVariables.ResolutionHeight / 3 + 140, "Exit"))
                 {
                     selected[4] = true;
                 }
@@ -77,7 +81,7 @@ namespace CSFalpha1.Menu
         {
             if (isShowing)
             {
-                if (Simplify.MouseSelect(font, mouseState, Simplify.GetCenterText(font, "Exit"), Game.Height / 3 + 140, "Exit"))
+                if (Simplify.MouseSelect(font, mouseState, Simplify.GetCenterText(font, "Exit"), VideoVariables.ResolutionHeight / 3 + 140, "Exit"))
                 {
                     if (mouseState.LeftButton == ButtonState.Released && oldState.LeftButton == ButtonState.Pressed)
                     {

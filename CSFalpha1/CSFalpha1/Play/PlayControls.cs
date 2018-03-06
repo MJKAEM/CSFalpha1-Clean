@@ -1,11 +1,18 @@
-﻿using System;
+﻿#region Using Statements
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Input;
-using CSFalpha1.Play.Level.NPC;
-using CSFalpha1.Play.Level.NPC.Town;
+using NPC;
+using NPC.Town;
 using CSFalpha1.Play.Level;
+using CSFalpha1.Play.Player;
+using VideoDisplay;
+using Item.Armor.Shield;
+using Item.Weapon;
+using Item.Armor;
+#endregion
 
 namespace CSFalpha1.Play
 {
@@ -15,22 +22,12 @@ namespace CSFalpha1.Play
         private static Keys moveUp = Keys.Up, moveDown = Keys.Down, moveLeft = Keys.Left, moveRight = Keys.Right;
         private static Keys chat = Keys.Z, openInventory = Keys.I;
         private static MouseState oldMouseState = Mouse.GetState();
+        private static Merchant tradingMerchant;
         public static void NPCchat(KeyboardState keyboardState)
         {
-            Merchant npc = null;
             if (keyboardState.IsKeyUp(chat) && oldKeyboardState.IsKeyDown(chat))
             {
-                for (int i = 0; i < ((Town)PlayState.Level.ElementAt(0)).GetNPC.Count(); i++)
-                {
-                    if (((Town)PlayState.Level.ElementAt(0)).GetNPC.ElementAt(i) is Merchant)
-                    {
-                        if (((Merchant)((Town)PlayState.Level.ElementAt(0)).GetNPC.ElementAt(i)).IsTrading)
-                        {
-                            npc = ((Merchant)((Town)PlayState.Level.ElementAt(0)).GetNPC.ElementAt(i));
-                        }
-                    }
-                }
-                if (npc == null || !npc.IsTrading)
+                if (tradingMerchant == null)
                 {
                     if (PlayState.Player.Chatting)
                     {
@@ -38,10 +35,10 @@ namespace CSFalpha1.Play
                     }
                     else
                     {
-                        ((Town)PlayState.Level.ElementAt(0)).Chat();
+                        PlayState.Town.Chat();
                         if (PlayState.Player.Chatting)
                         {
-                            PlayState.Player.Inv = false;
+                            PlayState.Player.PInv.InventoryOpen = false;
                         }
                     }
                 }
@@ -51,30 +48,19 @@ namespace CSFalpha1.Play
         {
             if (keyboardState.IsKeyUp(openInventory) && oldKeyboardState.IsKeyDown(openInventory))
             {
-                if (PlayState.Player.Inv)
+                if (PlayState.Player.PInv.InventoryOpen)
                 {
-                    PlayState.Player.Inv = false;
+                    PlayState.Player.PInv.InventoryOpen = false;
                 }
                 else if (!PlayState.Player.Chatting)
                 {
-                    PlayState.Player.Inv = true;
+                    PlayState.Player.PInv.InventoryOpen = true;
                 }
             }
         }
         public static void PlayerMove(KeyboardState keyboardState)
         {
-            Merchant npc = null;
-            for (int i = 0; i < ((Town)PlayState.Level.ElementAt(0)).GetNPC.Count(); i++)
-            {
-                if (((Town)PlayState.Level.ElementAt(0)).GetNPC.ElementAt(i) is Merchant)
-                {
-                    if (((Merchant)((Town)PlayState.Level.ElementAt(0)).GetNPC.ElementAt(i)).IsTrading)
-                    {
-                        npc = ((Merchant)((Town)PlayState.Level.ElementAt(0)).GetNPC.ElementAt(i));
-                    }
-                }
-            }
-            if (npc == null || !npc.IsTrading)
+            if (tradingMerchant == null)
             {
                 if (keyboardState.IsKeyDown(moveUp))
                 {
@@ -117,30 +103,91 @@ namespace CSFalpha1.Play
         {
             if (mouseState.LeftButton == ButtonState.Released && oldMouseState.LeftButton == ButtonState.Pressed)
             {
-                PlayState.Player.PInv.MouseStorage.OldItem = PlayState.Player.PInv.MouseStorage.Nothing;
-                if (PlayState.Player.PickUpItem)
+                PlayState.Player.PInv.MouseStorage.OldItem = null;
+                if (PlayState.Player.PInv.InventoryOpen)
                 {
-                    PlayState.Player.PInv.MouseStorage.DropItem(mouseState);
-                }
-                else
-                {
-                    if (PlayState.Player.Inv)
+                    if (PlayState.Player.PickUpItem)
                     {
-                        if (mouseState.X > Game.Width / 2)
+                        if (mouseState.X > VideoVariables.ResolutionWidth / 2)
+                        {
+                            PlayState.Player.PInv.MouseStorage.DropItemInventory(mouseState, PlayState.Player.PInv);
+                            if (PlayState.Player.PInv.MouseStorage.Item is AbstractWeapon || PlayState.Player.PInv.MouseStorage.Item is AbstractShield)
+                            {
+                                if (mouseState.Y > VideoVariables.ResolutionHeight / 2 - 190 && mouseState.Y < VideoVariables.ResolutionHeight / 2 - 190 + 120)
+                                {
+                                    if (mouseState.X > (VideoVariables.ResolutionWidth - 320) + 15 && mouseState.X < (VideoVariables.ResolutionWidth - 320) + 15 + 60)
+                                    {
+                                        PlayState.Player.PInv.MouseStorage.DropItemEquipRightHand(PlayState.Player.PInv);
+                                    }
+                                    else if (mouseState.X > (VideoVariables.ResolutionWidth - 320) + 244 && mouseState.X < (VideoVariables.ResolutionWidth - 320) + 244 + 60)
+                                    {
+                                        PlayState.Player.PInv.MouseStorage.DropItemEquipLeftHand(PlayState.Player.PInv);
+                                    }
+                                }
+                            }
+                            else if (PlayState.Player.PInv.MouseStorage.Item is AbstractArmor /*already implied && !(PlayState.Player.PInv.MouseStorage.Item is AbstractShield)*/)
+                            {
+                                if (mouseState.X > (VideoVariables.ResolutionWidth - 320) + 129 && mouseState.X < (VideoVariables.ResolutionWidth - 320) + 129 + 60)
+                                {
+                                    if (mouseState.Y > VideoVariables.ResolutionHeight / 2 - 230 && mouseState.Y < VideoVariables.ResolutionHeight / 2 - 230 + 60)
+                                    {
+                                        PlayState.Player.PInv.MouseStorage.DropItemEquipHelmet(PlayState.Player.PInv);
+                                        Console.WriteLine("Helmet");
+                                    }
+                                    else if (mouseState.Y > VideoVariables.ResolutionHeight / 2 - 160 && mouseState.Y < VideoVariables.ResolutionHeight / 2 - 160 + 90)
+                                    {
+                                        PlayState.Player.PInv.MouseStorage.DropItemEquipBodyArmor(PlayState.Player.PInv);
+                                        Console.WriteLine("Body");
+                                    }
+                                    else if (mouseState.Y > VideoVariables.ResolutionHeight / 2 - 60 && mouseState.Y < VideoVariables.ResolutionHeight / 2 - 60 + 30)
+                                    {
+                                        PlayState.Player.PInv.MouseStorage.DropItemEquipBelt(PlayState.Player.PInv);
+                                        Console.WriteLine("Belt");
+                                    }
+                                }
+                                else if (mouseState.Y > VideoVariables.ResolutionHeight / 2 - 60 && mouseState.Y < VideoVariables.ResolutionHeight / 2 - 60 + 60)
+                                {
+                                    if (mouseState.X > (VideoVariables.ResolutionWidth - 320) + 15 && mouseState.X < (VideoVariables.ResolutionWidth - 320) + 15 + 60)
+                                    {
+                                        PlayState.Player.PInv.MouseStorage.DropItemEquipGloves(PlayState.Player.PInv);
+                                        Console.WriteLine("Gloves");
+                                    }
+                                    else if (mouseState.X > (VideoVariables.ResolutionWidth - 320) + 244 && mouseState.X < (VideoVariables.ResolutionWidth - 320) + 244 + 60)
+                                    {
+                                        PlayState.Player.PInv.MouseStorage.DropItemEquipBoots(PlayState.Player.PInv);
+                                        Console.WriteLine("Boots");
+                                    }
+                                }
+                            }
+                        }
+                        else if (PlayState.CurrentLevel == -1)
+                        {
+                            if (tradingMerchant != null)
+                            {
+                                PlayState.Player.PInv.MouseStorage.DropItemInventory(mouseState, PlayState.Player.PInv, tradingMerchant.GetInventory);
+                            }
+                        }
+                        if (PlayState.Player.PInv.MouseStorage.Item == null)
+                        {
+                            PlayState.Player.PickUpItem = false;
+                        }
+                        else
+                        {
+                            PlayState.Player.PickUpItem = true;
+                        }
+                        EpicTrapCard();
+                    }
+                    else
+                    {
+                        if (mouseState.X > VideoVariables.ResolutionWidth / 2)
                         {
                             PlayState.Player.PickupPlayerInventoryItem(mouseState);
                         }
                         else
                         {
-                            for (int i = 0; i < ((Town)PlayState.Level.ElementAt(0)).GetNPC.Count(); i++)
+                            if (tradingMerchant != null)
                             {
-                                if (((Town)PlayState.Level.ElementAt(0)).GetNPC.ElementAt(i) is Merchant)
-                                {
-                                    if (((Merchant)((Town)PlayState.Level.ElementAt(0)).GetNPC.ElementAt(i)).IsTrading)
-                                    {
-                                        PlayState.Player.PickupOtherInventoryItem(mouseState, (Merchant)((Town)PlayState.Level.ElementAt(0)).GetNPC.ElementAt(i));
-                                    }
-                                }
+                                PlayState.Player.PickupOtherInventoryItem(mouseState, tradingMerchant.GetInventory);
                             }
                         }
                     }
@@ -151,24 +198,62 @@ namespace CSFalpha1.Play
         {
             if (mouseState.LeftButton == ButtonState.Released && oldMouseState.LeftButton == ButtonState.Pressed)
             {
-                PlayState.Player.PInv.CloseMenu(mouseState, null);
+                PlayState.Player.PInv.CloseMenu(mouseState);
             }
         }
         public static void CloseMerchantInventory(MouseState mouseState)
         {
             if (mouseState.LeftButton == ButtonState.Released && oldMouseState.LeftButton == ButtonState.Pressed)
             {
-                for (int i = 0; i < ((Town)PlayState.Level.ElementAt(0)).GetNPC.Count(); i++)
+                if (tradingMerchant != null)
                 {
-                    if (((Town)PlayState.Level.ElementAt(0)).GetNPC.ElementAt(i) is Merchant)
+                    tradingMerchant.GetInventory.CloseMenu(mouseState);
+                    if (!tradingMerchant.GetInventory.InventoryOpen)
                     {
-                        if (((Merchant)((Town)PlayState.Level.ElementAt(0)).GetNPC.ElementAt(i)).IsTrading)
-                        {
-                            Merchant npc = ((Merchant)((Town)PlayState.Level.ElementAt(0)).GetNPC.ElementAt(i));
-                            npc.GetInventory.CloseMenu(mouseState, npc);
-                        }
+                        PlayState.Player.PInv.InventoryOpen = false;
                     }
                 }
+            }
+        }
+        public static void UseConsumableItem(MouseState mouseState)
+        {
+            if (mouseState.RightButton == ButtonState.Released && oldMouseState.RightButton == ButtonState.Pressed)
+            {
+                if (PlayState.Player.PInv.InventoryOpen)
+                {
+                    PlayState.Player.PInv.UseConsumableItem(mouseState);
+                }
+            }
+        }
+        private static void EpicTrapCard()
+        {
+            if (PlayState.Player.PInv.RightHand != null)
+            {
+                PlayState.Player.PInv.RightHand.Woop();
+            }
+            if (PlayState.Player.PInv.LeftHand != null)
+            {
+                PlayState.Player.PInv.LeftHand.Woop();
+            }
+            if (PlayState.Player.PInv.Helmet != null)
+            {
+                PlayState.Player.PInv.Helmet.Woop();
+            }
+            if (PlayState.Player.PInv.Body != null)
+            {
+                PlayState.Player.PInv.Body.Woop();
+            }
+            if (PlayState.Player.PInv.Gloves != null)
+            {
+                PlayState.Player.PInv.Gloves.Woop();
+            }
+            if (PlayState.Player.PInv.Boots != null)
+            {
+                PlayState.Player.PInv.Boots.Woop();
+            }
+            if (PlayState.Player.PInv.LeftHand is AbstractShield && PlayState.Player.PInv.RightHand is AbstractShield)
+            {
+                Main.Wop();
             }
         }
         public static void OldState(KeyboardState keyboardState, MouseState mouseState)
@@ -178,5 +263,6 @@ namespace CSFalpha1.Play
         }
         public static KeyboardState OldKeyboardState { get { return oldKeyboardState; } }
         public static MouseState OldMouseState { get { return oldMouseState; } }
+        public static Merchant TradingMerchant { get { return tradingMerchant; } set { tradingMerchant = value; } }
     }
 }

@@ -5,6 +5,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSFalpha1", "CSFalpha1\CSFa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSFalpha1Content", "CSFalpha1\CSFalpha1Content\CSFalpha1Content.contentproj", "{0B856E54-F6FF-4052-B45C-CDF72011B3F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Item", "Item\Item.csproj", "{1CC1AA4E-FBF1-4F73-A2AD-D11375B4E868}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErrorDepartment", "ErrorDepartment\ErrorDepartment.csproj", "{65109767-EF3B-4860-B537-90ACB7631168}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoDisplay", "VideoDisplay\VideoDisplay.csproj", "{CEBA49A3-790F-4EF3-9969-161E77A1A584}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPC", "NPC\NPC.csproj", "{F764F082-5EC8-4BCE-B0C1-FAE3573485B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Inventory", "Inventory\Inventory.csproj", "{A57FB991-FE51-4CF1-BBC8-E7E41445612B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ContentLoader", "ContentLoader\ContentLoader.csproj", "{28972F02-8F86-4D3E-83D5-F5A1396DB8E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MK", "MK\MK.csproj", "{406539FB-118D-4FE4-867D-4B5A627A7097}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -17,6 +31,34 @@ Global
 		{919900AB-10D3-4D10-97DC-64FE38DA98AA}.Release|x86.Build.0 = Release|x86
 		{0B856E54-F6FF-4052-B45C-CDF72011B3F3}.Debug|x86.ActiveCfg = Debug|x86
 		{0B856E54-F6FF-4052-B45C-CDF72011B3F3}.Release|x86.ActiveCfg = Release|x86
+		{1CC1AA4E-FBF1-4F73-A2AD-D11375B4E868}.Debug|x86.ActiveCfg = Debug|x86
+		{1CC1AA4E-FBF1-4F73-A2AD-D11375B4E868}.Debug|x86.Build.0 = Debug|x86
+		{1CC1AA4E-FBF1-4F73-A2AD-D11375B4E868}.Release|x86.ActiveCfg = Release|x86
+		{1CC1AA4E-FBF1-4F73-A2AD-D11375B4E868}.Release|x86.Build.0 = Release|x86
+		{65109767-EF3B-4860-B537-90ACB7631168}.Debug|x86.ActiveCfg = Debug|x86
+		{65109767-EF3B-4860-B537-90ACB7631168}.Debug|x86.Build.0 = Debug|x86
+		{65109767-EF3B-4860-B537-90ACB7631168}.Release|x86.ActiveCfg = Release|x86
+		{65109767-EF3B-4860-B537-90ACB7631168}.Release|x86.Build.0 = Release|x86
+		{CEBA49A3-790F-4EF3-9969-161E77A1A584}.Debug|x86.ActiveCfg = Debug|x86
+		{CEBA49A3-790F-4EF3-9969-161E77A1A584}.Debug|x86.Build.0 = Debug|x86
+		{CEBA49A3-790F-4EF3-9969-161E77A1A584}.Release|x86.ActiveCfg = Release|x86
+		{CEBA49A3-790F-4EF3-9969-161E77A1A584}.Release|x86.Build.0 = Release|x86
+		{F764F082-5EC8-4BCE-B0C1-FAE3573485B3}.Debug|x86.ActiveCfg = Debug|x86
+		{F764F082-5EC8-4BCE-B0C1-FAE3573485B3}.Debug|x86.Build.0 = Debug|x86
+		{F764F082-5EC8-4BCE-B0C1-FAE3573485B3}.Release|x86.ActiveCfg = Release|x86
+		{F764F082-5EC8-4BCE-B0C1-FAE3573485B3}.Release|x86.Build.0 = Release|x86
+		{A57FB991-FE51-4CF1-BBC8-E7E41445612B}.Debug|x86.ActiveCfg = Debug|x86
+		{A57FB991-FE51-4CF1-BBC8-E7E41445612B}.Debug|x86.Build.0 = Debug|x86
+		{A57FB991-FE51-4CF1-BBC8-E7E41445612B}.Release|x86.ActiveCfg = Release|x86
+		{A57FB991-FE51-4CF1-BBC8-E7E41445612B}.Release|x86.Build.0 = Release|x86
+		{28972F02-8F86-4D3E-83D5-F5A1396DB8E8}.Debug|x86.ActiveCfg = Debug|x86
+		{28972F02-8F86-4D3E-83D5-F5A1396DB8E8}.Debug|x86.Build.0 = Debug|x86
+		{28972F02-8F86-4D3E-83D5-F5A1396DB8E8}.Release|x86.ActiveCfg = Release|x86
+		{28972F02-8F86-4D3E-83D5-F5A1396DB8E8}.Release|x86.Build.0 = Release|x86
+		{406539FB-118D-4FE4-867D-4B5A627A7097}.Debug|x86.ActiveCfg = Debug|x86
+		{406539FB-118D-4FE4-867D-4B5A627A7097}.Debug|x86.Build.0 = Debug|x86
+		{406539FB-118D-4FE4-867D-4B5A627A7097}.Release|x86.ActiveCfg = Release|x86
+		{406539FB-118D-4FE4-867D-4B5A627A7097}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

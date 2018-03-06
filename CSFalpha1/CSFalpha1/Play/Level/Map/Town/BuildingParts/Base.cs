@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using VideoDisplay;
+using ContentLoader;
 
 namespace CSFalpha1.Play.Level.Map.Town.BuildingParts
 {
-    public class Base : Obstruction
+    public class Base : AbstractObstruction
     {
         public Base(int x, int y)
             : base(x, y)
@@ -17,12 +19,12 @@ namespace CSFalpha1.Play.Level.Map.Town.BuildingParts
         }
         public override void LoadContent()
         {
-            objectSprite = ContentLoader.TextureSprite(1);
+            objectSprite = TheContentLoader.TextureSprite[1];
         }
         public override void Show(SpriteBatch sb)
         {
             sb.Draw(objectSprite,
-                        new Rectangle(x - PlayState.Player.RenderPosX, y - PlayState.Player.RenderPosY, width, height),
+                        new Rectangle(x - VideoVariables.RenderPosX, y - VideoVariables.RenderPosY, width, height),
                         new Rectangle(38, 135, width, height),
                        Color.White);
         }

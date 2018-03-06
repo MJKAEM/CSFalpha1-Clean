@@ -38,3 +38,4 @@ CSFalpha1/CSFalpha1Content/xna-4.0-x86/Nuclex.Graphics.SpecialEffects.xml filter
 CSFalpha1/CSFalpha1Content/xna-4.0-x86/Nuclex.Graphics.xml filter=lfs diff=lfs merge=lfs -text
 CSFalpha1/CSFalpha1Content/xna-4.0-x86/Nuclex.UserInterface.dll filter=lfs diff=lfs merge=lfs -text
 CSFalpha1/CSFalpha1Content/xna-4.0-x86/Nuclex.UserInterface.xml filter=lfs diff=lfs merge=lfs -text
+*.xcf filter=lfs diff=lfs merge=lfs -text

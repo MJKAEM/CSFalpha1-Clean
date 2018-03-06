@@ -1,28 +1,28 @@
-﻿using System;
+﻿#region Using Statements
+using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
-using CSFalpha1.Play.Level.NPC;
-using CSFalpha1.Play.Level.NPC.Town;
+using NPC;
+using NPC.Town;
 using CSFalpha1.Play.Level.Map;
+#endregion
 
 namespace CSFalpha1.Play.Level
 {
-    public abstract class abstractLevel
+    public abstract class AbstractLevel
     {
-        protected int sizeX, sizeY;
-        protected List<abstractNPC> npc;
-        protected Texture2D Floor;
-        protected List<Obstruction> structure;
+        private int sizeX, sizeY;
 
-        public abstractLevel()
+        protected Texture2D Floor;
+        protected List<AbstractObstruction> structure;
+
+        protected AbstractLevel()
         {
-            structure = new List<Obstruction>();
-            npc = new List<abstractNPC>();
+            structure = new List<AbstractObstruction>();
         }
-        public abstract void LoadContent();
         public void Show(SpriteBatch sb)
         {
             Layer1(sb);
@@ -37,64 +37,18 @@ namespace CSFalpha1.Play.Level
             ALayer3(sb);
             ALayer4(sb);
         }
-        public void Move()
-        {
-            for (int i = 0; i < npc.Count(); i++)
-            {
-                npc.ElementAt(i).Move();
-            }
-        }
-        public void Block()
-        {
-            for (int i = 0; i < npc.Count(); i++)
-            {
-                npc.ElementAt(i).Block();
-            }
-            for (int i = 0; i < structure.Count(); i++)
-            {
-                structure.ElementAt(i).Block();
-            }
-        }
-        public bool GetCollide(int a)
-        {
-            for (int i = 0; i < npc.Count(); i++)
-            {
-                if (npc.ElementAt(i).GetCollide(a))
-                {
-                    return true;
-                }
-            }
-            for (int i = 0; i < structure.Count(); i++)
-            {
-                if (structure.ElementAt(i).GetCollide(a))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        public void UnCollide(int a)
-        {
-            for (int i = 0; i < npc.Count(); i++)
-            {
-                npc.ElementAt(i).UnCollide(a);
-            }
-            for (int i = 0; i < structure.Count(); i++)
-            {
-                structure.ElementAt(i).UnCollide(a);
-            }
-        }
         /**************These four layers are restricted to appearing below the player.**************/
-        public abstract void Layer1(SpriteBatch sb);
-        public abstract void Layer2(SpriteBatch sb);
-        public abstract void Layer3(SpriteBatch sb);
-        public abstract void Layer4(SpriteBatch sb);
+        public virtual void Layer1(SpriteBatch sb) { }
+        public virtual void Layer2(SpriteBatch sb) { }
+        public virtual void Layer3(SpriteBatch sb) { }
+        public virtual void Layer4(SpriteBatch sb) { }
         /**************These four layers are restricted to appearing above the player.**************/
-        public abstract void ALayer1(SpriteBatch sb);
-        public abstract void ALayer2(SpriteBatch sb);
-        public abstract void ALayer3(SpriteBatch sb);
-        public abstract void ALayer4(SpriteBatch sb);
+        public virtual void ALayer1(SpriteBatch sb) { }
+        public virtual void ALayer2(SpriteBatch sb) { }
+        public virtual void ALayer3(SpriteBatch sb) { }
+        public virtual void ALayer4(SpriteBatch sb) { }
 
-        public List<abstractNPC> GetNPC { get { return npc; } }
+        public int SizeX { get { return sizeX; } set { sizeX = value; } }
+        public int SizeY { get { return sizeY; } set { sizeY = value; } }
     }
 }

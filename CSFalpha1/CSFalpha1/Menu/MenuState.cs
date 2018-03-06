@@ -1,16 +1,21 @@
-﻿using System;
+﻿#region Using Statements
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+using VideoDisplay;
+using ContentLoader;
+#endregion
 
 namespace CSFalpha1.Menu
 {
     public static class MenuState
     {
-        private static List<Menu> menu = new List<Menu>();
-        private static bool pressed = false;
+        private static List<AbstractMenu> menu = new List<AbstractMenu>();
+        private static bool pressed;
         public static void Initialize()
         {
             menu.Add(new MainMenu());
@@ -22,15 +27,15 @@ namespace CSFalpha1.Menu
         }
         public static void LoadContent()
         {
-            foreach (Menu m in menu)
+            foreach (AbstractMenu m in menu)
             {
                 m.LoadContent();
             }
         }
         public static void Draw(SpriteBatch sb, MouseState mouseState)
         {
-            Simplify.CenterText(sb, ContentLoader.Font(0), Game.Height / 5, "ECalpha1.1 - C#");
-            foreach (Menu m in menu)
+            Simplify.CenterText(sb, TheContentLoader.Font[0], VideoVariables.ResolutionHeight / 5, "ECalpha1.1 - C#");
+            foreach (AbstractMenu m in menu)
             {
                 if (m.IsShowing)
                 {
@@ -40,10 +45,10 @@ namespace CSFalpha1.Menu
         }
         public static void Update(KeyboardState keyboardState, MouseState mouseState, Game game)
         {
-            KeyboardState oldKeyboardState = MenuControls.OldKeyboardState;
+            //KeyboardState oldKeyboardState = MenuControls.OldKeyboardState;
             MouseState oldMouseState = MenuControls.OldMouseState;
 
-            foreach (Menu m in menu)
+            foreach (AbstractMenu m in menu)
             {
                 if (m.IsShowing)
                 {
@@ -59,7 +64,7 @@ namespace CSFalpha1.Menu
             //Must be at the end
             MenuControls.OldState(keyboardState, mouseState);
         }
-        public static List<Menu> Menu { get { return menu; } }
+        public static List<AbstractMenu> Menu { get { return menu; } }
         public static bool Pressed { get { return pressed; } set { pressed = value; } }
     }
 }

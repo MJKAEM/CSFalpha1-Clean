@@ -1,9 +1,13 @@
-﻿using System;
+﻿#region Using Statements
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using VideoDisplay;
+using ContentLoader;
+#endregion
 
 namespace CSFalpha1.Play.Level.Map.Town.BuildingParts
 {
@@ -20,12 +24,12 @@ namespace CSFalpha1.Play.Level.Map.Town.BuildingParts
         }
         public virtual void LoadContent()
         {
-            objectSprite = ContentLoader.TextureSprite(1);
+            objectSprite = TheContentLoader.TextureSprite[1];
         }
         public void Show(SpriteBatch sb)
         {
             sb.Draw(objectSprite,
-                        new Rectangle(x - PlayState.Player.RenderPosX, y - PlayState.Player.RenderPosY, width, height),
+                        new Rectangle(x - VideoVariables.RenderPosX, y - VideoVariables.RenderPosY, width, height),
                         new Rectangle(0, 0, width, height),
                        Color.White);
         }

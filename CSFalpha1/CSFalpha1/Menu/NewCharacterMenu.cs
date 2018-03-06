@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace CSFalpha1.Menu
 {
-    public class NewCharacterMenu : Menu
+    public class NewCharacterMenu : AbstractMenu
     {
         public override void LoadContent()
         {

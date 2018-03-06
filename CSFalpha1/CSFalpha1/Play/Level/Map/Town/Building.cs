@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace CSFalpha1.Play.Level.Map.Town
 {
-    public class Building : Obstruction
+    public class Building : AbstractObstruction
     {
         protected Roof Roof;
         protected Base Base;
